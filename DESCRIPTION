@@ -1,0 +1,16 @@
+Package: NOAAearthquake
+Type: Package
+Title: Cleaning, visualising and mapping a NOAA (earthquake) file
+Version: 0.1
+Date: 2017-07-15
+Author: JC
+Maintainer: JC <JC@nowhere.com>
+Description: Functions for cleaning, visualising and mapping a NOAA file.
+License: GPL-3
+LazyData: TRUE
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown,
+    testthat
+Imports: readr, dplyr, magrittr, tidyr, stringi, scales, ggplot2, grid, leaflet
+VignetteBuilder: knitr

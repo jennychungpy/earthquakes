@@ -1,0 +1,71 @@
+---
+title: "Earthquakes vignettes"
+author: "JC"
+date: "16 juli 2017"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Earthquakes vignettes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# The 'earthquakes' package
+
+## Overview
+The 'earthquakes' package is a package to clean, visualise and map NOAA earthquakes data. The functions to clean the data are 'eq_clean_data' and 'eq_location_clean' functions. Functions to visualise the data are 'geom_timeline' and 'geom_timeline_label' functions and to map are 'eq_map' and 'eq_create_label' functions. Below there are a short description and an example of these functions.
+The usd packages are readr, dplyr, magrittr, tidyr, stringi, scales, ggplot2, grid and leaflet.
+
+
+## Cleaning data
+The 'eq_clean_data' function 
+ - creates a 'DATE' variable from 'YEAR', 'MONTH' and 'DAY' columns, 
+ - adjusts the longitude and longitude variable into numerical variables
+ - creates a 'locations' variable from 'LOCATION_NAME' column
+This function works together with the 'eq_location_clean' function that turn the 'COUNTRY' column into title case.
+
+```{r cleaning_NOAAData}
+fileName <-  system.file("../earthquakes.tsv.gz")
+file <- readr::read_delim(fileName, delim = "\t")
+file_cleaned <- eq_clean_data(file)
+file_cleaned
+```
+
+
+## Visualising data
+The 'geom_timeline' function creates a timeline with the following elements:
+ - eacht timeline represents a country
+ - the earthquake events are displayed as circles
+ - the size of the earthquake indicted the magnitude of the earthquakes
+ - the color of the circles represents the number of deaths of an earthquake
+The location of each earthquake is created by the 'geom_timeline_label' function.
+
+```{r visualising_NOAAData, eval=FALSE, include=FALSE}
+fileName <-  system.file("extdata/earthquakes.tsv.gz", package = "earthquakes")
+file <- readr::read_delim(fileName, delim = "\t")
+data <- eq_clean_data(file) %>%
+  filter(COUNTRY == c("China", "Usa", "Japan"),
+         DATE >= "1999-01-01",
+         DATE <= "2012-12-31")
+ggplot(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
+  geom_timeline() +
+  theme(legend.position = "bottom") +
+  geom_timeline_label(aes(x=DATE, label = locations, n_maxVar = EQ_PRIMARY, n_max=10)) +
+  labs(x = "Date", y = "Country", fill = "# deaths", size = "Richter scale value") 
+```
+
+
+## Mapping 
+The 'eq_map' function maps the NOAA earthquakes data on a geographical map using the 'leaflet' package. The earthquakes are circles and the size of the circles is the magnitude of the earthquakes. When hovering over an earthquake on the map, a pop-up window displays information about the location, the magnitude and the number of deaths of the respective earthquake.
+
+```{r mapping_NOAAData, eval=FALSE, include=FALSE}
+map <- readr::read_delim("extdata/earthquakes.tsv.gz", delim = "\t") %>% 
+  eq_clean_data() %>% 
+  dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>% 
+  dplyr::mutate(popup_text = eq_create_label(.)) %>% 
+  eq_map(annot_col = "popupText")
+map 
+```
