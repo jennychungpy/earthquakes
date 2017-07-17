@@ -28,7 +28,7 @@ The 'eq_clean_data' function
 This function works together with the 'eq_location_clean' function that turn the 'COUNTRY' column into title case.
 
 ```{r cleaning_NOAAData}
-fileName <-  system.file("../earthquakes.tsv.gz")
+fileName <-  system.file("inst/extdata/earthquakes.tsv.gz")
 file <- readr::read_delim(fileName, delim = "\t")
 file_cleaned <- eq_clean_data(file)
 file_cleaned
@@ -62,7 +62,7 @@ ggplot(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)
 The 'eq_map' function maps the NOAA earthquakes data on a geographical map using the 'leaflet' package. The earthquakes are circles and the size of the circles is the magnitude of the earthquakes. When hovering over an earthquake on the map, a pop-up window displays information about the location, the magnitude and the number of deaths of the respective earthquake.
 
 ```{r mapping_NOAAData, eval=FALSE, include=FALSE}
-map <- readr::read_delim("extdata/earthquakes.tsv.gz", delim = "\t") %>% 
+map <- readr::read_delim("inst/extdata/earthquakes.tsv.gz", delim = "\t") %>% 
   eq_clean_data() %>% 
   dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>% 
   dplyr::mutate(popup_text = eq_create_label(.)) %>% 

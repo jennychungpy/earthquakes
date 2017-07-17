@@ -18,7 +18,7 @@
 #' #  eq_clean_data() %>%
 #' #  dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
 #' #  dplyr::mutate(popup_text = eq_create_label(.)) %>%
-#' #  eq_map(annot_col = "popupText")
+#' #  eq_map(annot_col = "popup_text")
 #' #x
 #' #}
 #'
@@ -28,6 +28,6 @@ eq_create_label <- function(data){
   data$loc <- ifelse(is.na(data$locations), "", paste0("<strong>Location:</strong> ", data$locations))
   data$mag <- ifelse(is.na(data$EQ_PRIMARY), "", paste0("<br><strong>Magnitude:</strong> ", data$EQ_PRIMARY))
   data$deaths <- ifelse(is.na(data$DEATHS), "", paste0("<br><strong>Total deahts::</strong> ", data$DEATHS))
-  data$popupText <- paste0(data$loc, data$mag, data$deaths)
+  data$popup_text <- paste0(data$loc, data$mag, data$deaths)
 
 }

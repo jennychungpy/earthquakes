@@ -132,7 +132,7 @@ test_that("The column does not exist, resulting in no pop-up", {
     eq_clean_data() %>%
     dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
     dplyr::mutate(popup_text = eq_create_label(.)) %>%
-    eq_map(annot_col = "DATE")
+    eq_map(annot_col = "popup_text")
   expect_that(output, is_a('leaflet'))
 })
 

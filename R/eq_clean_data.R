@@ -23,7 +23,7 @@
 #' #@example
 #' #\dontrun{
 #' #file = "inst/extdata/earthquakes.tsv.gz"
-#' #file <- read_delim(file, delim = "\t")
+#' #file <- readr::read_delim(file, delim = "\t")
 #' #file_cleaned <- eq_clean_data(file)
 #' #}
 #'
