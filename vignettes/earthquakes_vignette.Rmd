@@ -27,12 +27,6 @@ The 'eq_clean_data' function
  - creates a 'locations' variable from 'LOCATION_NAME' column
 This function works together with the 'eq_location_clean' function that turn the 'COUNTRY' column into title case.
 
-```{r cleaning_NOAAData}
-fileName <-  system.file("inst/extdata/earthquakes.tsv.gz")
-file <- readr::read_delim(fileName, delim = "\t")
-file_cleaned <- eq_clean_data(file)
-file_cleaned
-```
 
 ```{r cleaningLocation_NOAAData}
 fileName <-  system.file("inst/extdata/earthquakes.tsv.gz")
@@ -40,6 +34,15 @@ file <- readr::read_delim(fileName, delim = "\t")
 locations_cleaned <- eq_location_clean(data, countryCol)
 locations_cleaned
 ```
+
+
+```{r cleaning_NOAAData}
+fileName <-  system.file("inst/extdata/earthquakes.tsv.gz")
+file <- readr::read_delim(fileName, delim = "\t")
+file_cleaned <- eq_clean_data(file)
+file_cleaned
+```
+
 
 
 ## Visualising data
