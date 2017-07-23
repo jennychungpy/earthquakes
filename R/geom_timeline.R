@@ -26,17 +26,35 @@
 #'
 #' @examples
 #' \dontrun{
-#' library(magrittr)
-#' data <- eq_clean_data(file) %>%
-#'   filter(COUNTRY == c("China", "Usa", "Japan"),
-#'          DATE >= "1999-01-01",
-#'          DATE <= "2012-12-31")
 #' ggplot() +
-#'   geom_timeline(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
+#'   geom_timeline(eq_clean_data(file) %>%
+#'        filter(COUNTRY == c("China", "Usa", "Japan"),
+#'              DATE >= "1999-01-01",
+#'              DATE <= "2012-12-31"),
+#'              aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
 #'   theme(legend.position = "bottom")
 #' }
 #'
 #' @export
+geom_timeline <- function(mapping = NULL,
+                          data = NULL,
+                          stat = 'identity',
+                          position = 'identity',
+                          na.rm = FALSE,
+                          show.legend = NA,
+                          inherit.aes = TRUE,
+                          ...) {
+  ggplot2::layer(geom = Geom_Timeline,
+                 mapping = mapping,
+                 data = data,
+                 stat = stat,
+                 position = position,
+                 show.legend = show.legend,
+                 inherit.aes = inherit.aes,
+                 params = list()
+  )
+}
+
 Geom_Timeline <- ggplot2::ggproto("Geom_Timeline",
                                   ggplot2::Geom,
                                   required_aes = c("x"),
@@ -75,21 +93,4 @@ Geom_Timeline <- ggplot2::ggproto("Geom_Timeline",
 )
 
 
-geom_timeline <- function(mapping = NULL,
-                          data = NULL,
-                          stat = 'identity',
-                          position = 'identity',
-                          na.rm = FALSE,
-                          show.legend = NA,
-                          inherit.aes = TRUE,
-                          ...) {
-  ggplot2::layer(geom = Geom_Timeline,
-                 mapping = mapping,
-                 data = data,
-                 stat = stat,
-                 position = position,
-                 show.legend = show.legend,
-                 inherit.aes = inherit.aes,
-                 params = list()
-  )
-}
+

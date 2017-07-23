@@ -37,6 +37,25 @@
 #' }
 #'
 #' @export
+geom_timeline_label <- function(mapping = NULL,
+                                data = NULL,
+                                stat = 'identity',
+                                position = 'identity',
+                                na.rm = FALSE,
+                                show.legend = NA,
+                                inherit.aes = TRUE,
+                                ...) {
+  ggplot2::layer(geom = Geom_Timeline_Label,
+                 mapping = mapping,
+                 data = data,
+                 stat = stat,
+                 position = position,
+                 show.legend = show.legend,
+                 inherit.aes = inherit.aes,
+                 params = list()
+  )
+}
+
 Geom_Timeline_Label <- ggplot2::ggproto("Geom_Timeline_Label",
                                         ggplot2::Geom,
                                         required_aes = c("x", "label", "n_maxVar", "n_max"),
@@ -79,21 +98,4 @@ Geom_Timeline_Label <- ggplot2::ggproto("Geom_Timeline_Label",
 )
 
 
-geom_timeline_label <- function(mapping = NULL,
-                                data = NULL,
-                                stat = 'identity',
-                                position = 'identity',
-                                na.rm = FALSE,
-                                show.legend = NA,
-                                inherit.aes = TRUE,
-                                ...) {
-  ggplot2::layer(geom = Geom_Timeline_Label,
-                 mapping = mapping,
-                 data = data,
-                 stat = stat,
-                 position = position,
-                 show.legend = show.legend,
-                 inherit.aes = inherit.aes,
-                 params = list()
-  )
-}
+
