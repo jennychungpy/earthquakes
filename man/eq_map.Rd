@@ -13,15 +13,6 @@ eq_map(data, annot_col)
 }
 \value{
 A geographical map with earthquakes (circles) of which the size indicates the magnitude of the earthquakes.
-
-#@example
-#\dontrun{
-#x <- readr::read_delim("data/earthquakes.tsv.gz", delim = "\t") %>%
-#  eq_clean_data() %>%
-#  dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
-#  eq_map(annot_col = "DATE")
-#x
-#}
 }
 \description{
 The 'eq_map' function maps the earthquakes on a geograpical map.
@@ -30,4 +21,16 @@ The 'eq_map' function maps the earthquakes on a geograpical map.
 The 'eq_map' function maps the earthquakes (as circles) on a geograpical map, given the longitude and latitude of
          the earthquake events. The magnitude of the earthquakes is shown by the radius of the circles. When hovering over
          an earthquake events a pop-up shows some information about the earthquake.
+}
+\examples{
+\dontrun{
+library(magrittr)
+x <- readr::read_delim("data/earthquakes.tsv.gz", delim = "\\t") \%>\%
+  eq_clean_data() \%>\%
+  dplyr::filter(COUNTRY == "Mexico",
+   DATE >= "2000-01-01") \%>\%
+  eq_map(annot_col = "DATE")
+x
+}
+
 }

@@ -11,16 +11,6 @@ eq_create_label(data)
 }
 \value{
 A pop-up with information about the location, magnitude and the number of deaths, when hovering over an earthquake.
-
-#@example
-#\dontrun{
-#x <- readr::read_delim("data/earthquakes.tsv.gz", delim = "\t") %>%
-#  eq_clean_data() %>%
-#  dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
-#  dplyr::mutate(popup_text = eq_create_label(.)) %>%
-#  eq_map(annot_col = "popupText")
-#x
-#}
 }
 \description{
 Information about the earthquakes like locations, magnitude and the number of deaths are given in a pop-up.
@@ -32,4 +22,16 @@ The 'eq_create_label' function indicates 3 information about the earthquakes in 
 }
 \note{
 error - An error will be given when there are no column named as "locations", "EQ_PRIMARY" and "DEATHS".
+}
+\examples{
+\dontrun{
+library(magrittr)
+x <- readr::read_delim("data/earthquakes.tsv.gz", delim = "\\t") \%>\%
+  eq_clean_data() \%>\%
+  dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) \%>\%
+  dplyr::mutate(popup_text = eq_create_label(.)) \%>\%
+  eq_map(annot_col = "popup_text")
+x
+}
+
 }

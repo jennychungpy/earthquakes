@@ -11,6 +11,7 @@
 #' @importFrom dplyr arrange
 #' @importFrom grid pointsGrob gpar polylineGrob gList
 #' @importFrom scales alpha
+#' @importFrom magrittr %>%
 #'
 #' @param data - File name
 #' @param x - The parameter in the X-axis: the time (as.Date object)
@@ -23,16 +24,17 @@
 #' @return A geom layer with timeline, each timeline shows a country with its earthquake events in circles, the magnitude of an earthquake (size of
 #'         circles) and the number of deaths (the colouring of the circles).
 #'
-#' #@example
-#' #\dontrun{
-#' #data <- eq_clean_data(file) %>%
-#' #  filter(COUNTRY == c("China", "Usa", "Japan"),
-#' #         DATE >= "1999-01-01",
-#' #         DATE <= "2012-12-31")
-#' #ggplot(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
-#' #  geom_timeline() +
-#' #  theme(legend.position = "bottom")
-#' #}
+#' @examples
+#' \dontrun{
+#' library(magrittr)
+#' data <- eq_clean_data(file) %>%
+#'   filter(COUNTRY == c("China", "Usa", "Japan"),
+#'          DATE >= "1999-01-01",
+#'          DATE <= "2012-12-31")
+#' ggplot() +
+#'   geom_timeline(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
+#'   theme(legend.position = "bottom")
+#' }
 #'
 #' @export
 Geom_Timeline <- ggplot2::ggproto("Geom_Timeline",

@@ -13,13 +13,6 @@ eq_location_clean(data, colName)
 }
 \value{
 A data frame in the global environment
-
-#@example
-#\dontrun{
-#file = "data/earthquakes.tsv.gz"
-#file <- read_delim(file, delim = "\t")
-#eq_location_clean(file, COUNTRY)
-#}
 }
 \description{
 The 'eq_location_clean(data, countryCol)' function will change the given column into title case.
@@ -31,4 +24,12 @@ The column with the country names of the given data file will be changed into ti
 error - An error is given when colName is not given.
 
 error - An error is given when colName is not a character
+}
+\examples{
+\dontrun{
+file = "data/earthquakes.tsv.gz"
+file <- read_delim(file, delim = "\\t")
+eq_location_clean(file, COUNTRY)
+}
+
 }

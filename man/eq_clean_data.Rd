@@ -11,13 +11,6 @@ eq_clean_data(data)
 }
 \value{
 A cleaned NOAA data frame
-
-#@example
-#\dontrun{
-#file = "inst/extdata/earthquakes.tsv.gz"
-#file <- read_delim(file, delim = "\t")
-#file_cleaned <- eq_clean_data(file)
-#}
 }
 \description{
 The 'eq_clean_data' function returns a cleaned NOAA data frame
@@ -31,4 +24,13 @@ The eq_clean_data function correct the data type of the columns YEAR, MONTH, DAY
 \note{
 error - When the column names do not include YEAR, MONTH, DAY, LATITUDE, LONGITUDE, DEATHS, EQ_PRIMARY, LOCATION_NAME
               and COUNTRY, an error will be given.
+}
+\examples{
+\dontrun{
+file = "inst/extdata/earthquakes.tsv.gz"
+file <- readr::read_delim(file, delim = "\\t")
+file_cleaned <- eq_clean_data(file)
+}
+
+
 }

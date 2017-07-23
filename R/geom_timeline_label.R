@@ -10,6 +10,7 @@
 #' @importFrom ggplot2 ggproto draw_key_point layer
 #' @importFrom dplyr filter
 #' @importFrom grid polylineGrob gpar gList
+#' @importFrom magrittr %>%
 #'
 #' @param x - The time parameter (as.Date object)
 #' @param label - The location names parameter (character)
@@ -21,18 +22,19 @@
 #'
 #' @return A geom visualising the locations of each earthquake event, indicated by a line.
 #'
-#' #@example
-#' #\dontrun{
-#' #data <- eq_clean_data(file) %>%
-#' #  filter(COUNTRY == c("China", "Usa", "Japan"),
-#' #         DATE >= "1999-01-01",
-#' #         DATE <= "2012-12-31")
-#' #ggplot(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
-#' #  geom_timeline() +
-#' #  theme(legend.position = "bottom") +
-#' #  geom_timeline_label(aes(x=DATE, label = locations, n_maxVar = EQ_PRIMARY, n_max=10)) +
-#' #  labs(x = "Date", y = "Country", fill = "# deaths", size = "Richter scale value")
-#' #}
+#' @examples
+#' \dontrun{
+#' library(magrittr)
+#' data <- eq_clean_data(file) %>%
+#'   filter(COUNTRY == c("China", "Usa", "Japan"),
+#'          DATE >= "1999-01-01",
+#'          DATE <= "2012-12-31")
+#' ggplot() +
+#'   geom_timeline(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
+#'   theme(legend.position = "bottom") +
+#'   geom_timeline_label(data, aes(x=DATE, label = locations, n_maxVar = EQ_PRIMARY, n_max=10)) +
+#'   labs(x = "Date", y = "Country", fill = "# deaths", size = "Richter scale value")
+#' }
 #'
 #' @export
 Geom_Timeline_Label <- ggplot2::ggproto("Geom_Timeline_Label",

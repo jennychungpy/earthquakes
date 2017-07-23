@@ -7,20 +7,23 @@
 #'          an earthquake events a pop-up shows some information about the earthquake.
 #'
 #' @importFrom leaflet leaflet addTiles addCircleMarkers
+#' @importFrom magrittr %>%
 #'
 #' @param data - A file name
 #' @param annot_col - The parameter that is annotated in a pop-up.
 #'
 #' @return A geographical map with earthquakes (circles) of which the size indicates the magnitude of the earthquakes.
 #'
-#' #@example
-#' #\dontrun{
-#' #x <- readr::read_delim("data/earthquakes.tsv.gz", delim = "\t") %>%
-#' #  eq_clean_data() %>%
-#' #  dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
-#' #  eq_map(annot_col = "DATE")
-#' #x
-#' #}
+#' @examples
+#' \dontrun{
+#' library(magrittr)
+#' x <- readr::read_delim("data/earthquakes.tsv.gz", delim = "\t") %>%
+#'   eq_clean_data() %>%
+#'   dplyr::filter(COUNTRY == "Mexico",
+#'    DATE >= "2000-01-01") %>%
+#'   eq_map(annot_col = "DATE")
+#' x
+#' }
 #'
 #' @export
 eq_map <- function(data, annot_col){

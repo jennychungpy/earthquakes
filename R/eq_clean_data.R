@@ -13,6 +13,7 @@
 #' @importFrom dplyr mutate_each mutate filter
 #' @importFrom tidyr replace_na unite
 #' @importFrom stringi stri_trans_totitle
+#' @importFrom magrittr %>%
 #'
 #' @param data - A delimited file that is read in by the 'read_delim' function
 #'
@@ -20,22 +21,28 @@
 #'
 #' @return A cleaned NOAA data frame
 #'
-#' #@example
-#' #\dontrun{
-#' #file = "inst/extdata/earthquakes.tsv.gz"
-#' #file <- readr::read_delim(file, delim = "\t")
-#' #file_cleaned <- eq_clean_data(file)
-#' #}
+#' @examples
+#' \dontrun{
+#' file = "inst/extdata/earthquakes.tsv.gz"
+#' file <- readr::read_delim(file, delim = "\t")
+#' file_cleaned <- eq_clean_data(file)
+#' }
+#'
 #'
 #' @export
 eq_clean_data <- function(data){
   data <- data %>%
-    dplyr::mutate_each(funs(as.character), c(YEAR, MONTH, DAY)) %>%
+    dplyr::mutate(YEAR = as.character(YEAR),
+                  MONTH = as.character(MONTH),
+                  DAY = as.character(DAY)) %>%
     tidyr::replace_na(list(MONTH = 0, DAY = 0)) %>%
     tidyr::unite(DATE, DAY, MONTH, YEAR, sep = "-") %>%
     dplyr::mutate(DATE = as.Date(DATE, format = "%d-%m-%Y")) %>%
     dplyr::filter(!is.na(DATE)) %>%
-    dplyr::mutate_each(funs(as.numeric), c(LATITUDE, LONGITUDE, DEATHS, EQ_PRIMARY))
+    dplyr::mutate(LATITUDE = as.numeric(LATITUDE),
+                  LONGITUDE = as.numeric(LONGITUDE),
+                  DEATHS = as.numeric(DEATHS),
+                  EQ_PRIMARY = as.numeric(EQ_PRIMARY))
   data$richterScaleValue <- ifelse(data$EQ_PRIMARY <= 2 & data$EQ_PRIMARY > 0, 2,
                                    ifelse(data$EQ_PRIMARY > 2 & data$EQ_PRIMARY <= 4, 4,
                                           ifelse(data$EQ_PRIMARY > 4 & data$EQ_PRIMARY <= 6, 6,

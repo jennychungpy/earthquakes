@@ -1,16 +1,24 @@
 
+# files
+######
+test_that("file exists in directory",{
+  expect_true(file.exists(file.path(system.file("extdata", package="NOAAearthquake"), "earthquakes.tsv.gz")))
+})
+
+
 # testing the eq_clean_data function
 ######
 context("eq_clean_data")
 test_that("Column YEAR does not exist", {
-  file <- read_csv("inst/extdata/test.csv")
-  expect_error(eq_clean_data(file))
+  file_csv <- system.file("extdata", "test.csv", package = "NOAAearthquake", mustWork = FALSE)
+  expect_error(eq_clean_data(file_csv))
 })
 
+
 test_that("The file contains all necessary columns", {
-  file = "inst/extdata/earthquakes.tsv.gz"
-  file <- read_delim(file, delim = "\t")
-  output <- eq_clean_data(file)
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  data <- readr::read_delim(filePath, delim = "\t")
+  output <- eq_clean_data(data)
   expect_that(output, is_a('data.frame'))
 })
 
@@ -19,15 +27,17 @@ test_that("The file contains all necessary columns", {
 ######
 context("eq_location_clean")
 test_that("The selected column do not contain character", {
-  file = "inst/extdata/earthquakes.tsv.gz"
-  file <- read_delim(file, delim = "\t")
-  expect_error(eq_location_clean(file, EQ_PRIMARY))
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  data <- readr::read_delim(filePath, delim = "\t")
+  col <- which(names(data) %in% "EQ_PRIMARY")
+  expect_error(eq_location_clean(file, col))
 })
 
 test_that("The selected column contains character", {
-  file = "inst/extdata/earthquakes.tsv.gz"
-  file <- read_delim(file, delim = "\t")
-  output <- eq_location_clean(file, COUNTRY)
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  data <- readr::read_delim(filePath, delim = "\t")
+  col <- which(names(data) %in% "COUNTRY")
+  output <- eq_location_clean(data, col)
   expect_that(output, is_a('data.frame'))
 })
 
@@ -36,9 +46,9 @@ test_that("The selected column contains character", {
 ######
 context("geom_timeline")
 test_that("A required parameter is not given", {
-  file = "inst/extdata/earthquakes.tsv.gz"
-  file <- read_delim(file, delim = "\t")
-  data <- eq_clean_data(file) %>%
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  data <- readr::read_delim(filePath, delim = "\t")
+  data <- eq_clean_data(data) %>%
     filter(COUNTRY == c("China", "Usa", "Japan"),
            DATE >= "1999-01-01",
            DATE <= "2012-12-31")
@@ -48,15 +58,15 @@ test_that("A required parameter is not given", {
 })
 
 test_that("The selected column contains character", {
-  file = "inst/extdata/earthquakes.tsv.gz"
-  file <- read_delim(file, delim = "\t")
-  data <- eq_clean_data(file) %>%
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  data <- readr::read_delim(filePath, delim = "\t")
+  data <- eq_clean_data(data) %>%
     filter(COUNTRY == c("China", "Usa", "Japan"),
            DATE >= "1999-01-01",
            DATE <= "2012-12-31")
-  output <- ggplot(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
+  output <- ggplot2::ggplot(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
     geom_timeline() +
-    theme(legend.position = "bottom")
+    ggplot2::theme(legend.position = "bottom")
   expect_that(output, is_a('ggplot'))
 })
 
@@ -65,9 +75,9 @@ test_that("The selected column contains character", {
 ######
 context("geom_timeline_label")
 test_that("A required parameter is not given", {
-  file = "inst/extdata/earthquakes.tsv.gz"
-  file <- read_delim(file, delim = "\t")
-  data <- eq_clean_data(file) %>%
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  data <- readr::read_delim(filePath, delim = "\t")
+  data <- eq_clean_data(data) %>%
     filter(COUNTRY == c("China", "Usa", "Japan"),
            DATE >= "1999-01-01",
            DATE <= "2012-12-31")
@@ -81,17 +91,17 @@ test_that("A required parameter is not given", {
 })
 
 test_that("The selected column contains character", {
-  file = "inst/extdata/earthquakes.tsv.gz"
-  file <- read_delim(file, delim = "\t")
-  data <- eq_clean_data(file) %>%
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  data <- readr::read_delim(filePath, delim = "\t")
+  data <- eq_clean_data(data) %>%
     filter(COUNTRY == c("China", "Usa", "Japan"),
            DATE >= "1999-01-01",
            DATE <= "2012-12-31")
-  output <- ggplot(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
+  output <- ggplot2::ggplot(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
     geom_timeline() +
-    theme(legend.position = "bottom") +
+    ggplot2::theme(legend.position = "bottom") +
     geom_timeline_label(aes(x=DATE, label = locations, n_maxVar = COUNTRY, n_max=10)) +
-    labs(x = "Date", y = "Country", fill = "# deaths", size = "Richter scale value")
+    ggplot2::labs(x = "Date", y = "Country", fill = "# deaths", size = "Richter scale value")
   expect_that(output, is_a('ggplot'))
 })
 
@@ -100,17 +110,19 @@ test_that("The selected column contains character", {
 ######
 context("eq_map")
 test_that("The file does not exist", {
-  x <- readr::read_delim("inst/extdata/earthquakes2017.tsv.gz", delim = "\t") %>%
-    eq_clean_data() %>%
-    dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
-    eq_map(annot_col = "DATE")
-  expect_error(x)
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  data <- readr::read_delim(filePath, delim = "\t")
+  expect_error(data %>%
+                 eq_clean_data() %>%
+                 dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
+                 eq_map(annot_col = "DATE"))
 })
 
 test_that("The column does not exist, resulting in no pop-up", {
-  output <- readr::read_delim("inst/extdata/earthquakes.tsv.gz", delim = "\t") %>%
-    eq_clean_data() %>%
-    dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  output <- eq_clean_data(readr::read_delim(filePath, delim = "\t")) %>%
+    filter(COUNTRY == "Mexico",
+           DATE  >= "2000-01-01") %>%
     eq_map(annot_col = "DATE")
   expect_that(output, is_a('leaflet'))
 })
@@ -120,18 +132,21 @@ test_that("The column does not exist, resulting in no pop-up", {
 ######
 context("eq_clean_label")
 test_that("The file does not exist", {
-  x <- readr::read_delim("inst/extdata/earthquakes.tsv.gz", delim = "\t") %>%
-    dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
-    dplyr::mutate(popup_text = eq_create_label(.)) %>%
-    eq_map(annot_col = "DATE")
-  expect_error(x)
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  expect_error(eq_clean_data(readr::read_delim(filePath, delim = "\t")) %>%
+                 dplyr::filter(COUNTRY == "Mexico",
+                        DATE  >= "2000-01-01") %>%
+                 dplyr:: mutate(popup_text = eq_create_label(.)) %>%
+                 eq_map())
 })
 
 test_that("The column does not exist, resulting in no pop-up", {
-  output <- readr::read_delim("inst/extdata/earthquakes.tsv.gz", delim = "\t") %>%
+  filePath <- file.path(system.file("extdata", package = "NOAAearthquake"), "earthquakes.tsv.gz")
+  output <- readr::read_delim(filePath, delim = "\t") %>%
     eq_clean_data() %>%
-    dplyr::filter(COUNTRY == "Mexico" & lubridate::year(DATE) >= 2000) %>%
-    dplyr::mutate(popup_text = eq_create_label(.)) %>%
+    filter(COUNTRY == "Mexico",
+           DATE  >= "2000-01-01") %>%
+    mutate(popup_text = eq_create_label(.)) %>%
     eq_map(annot_col = "popup_text")
   expect_that(output, is_a('leaflet'))
 })

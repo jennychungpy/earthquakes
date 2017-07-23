@@ -22,17 +22,6 @@ Geom_Timeline
 \value{
 A geom layer with timeline, each timeline shows a country with its earthquake events in circles, the magnitude of an earthquake (size of
         circles) and the number of deaths (the colouring of the circles).
-
-#@example
-#\dontrun{
-#data <- eq_clean_data(file) %>%
-#  filter(COUNTRY == c("China", "Usa", "Japan"),
-#         DATE >= "1999-01-01",
-#         DATE <= "2012-12-31")
-#ggplot(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
-#  geom_timeline() +
-#  theme(legend.position = "bottom")
-#}
 }
 \description{
 The geom_timeline visualises earthquakes events over time and per country in magnitude and number of deaths.
@@ -43,5 +32,18 @@ The geom_timeline function works together with ggplot2. This function visualises
 }
 \note{
 error - An error will appear when a parameter is not given.
+}
+\examples{
+\dontrun{
+library(magrittr)
+data <- eq_clean_data(file) \%>\%
+  filter(COUNTRY == c("China", "Usa", "Japan"),
+         DATE >= "1999-01-01",
+         DATE <= "2012-12-31")
+ggplot() +
+  geom_timeline(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
+  theme(legend.position = "bottom")
+}
+
 }
 \keyword{datasets}

@@ -12,12 +12,12 @@
 #'
 #' @return A data frame in the global environment
 #'
-#' #@example
-#' #\dontrun{
-#' #file = "data/earthquakes.tsv.gz"
-#' #file <- read_delim(file, delim = "\t")
-#' #eq_location_clean(file, COUNTRY)
-#' #}
+#' @examples
+#' \dontrun{
+#' file = "data/earthquakes.tsv.gz"
+#' file <- read_delim(file, delim = "\t")
+#' eq_location_clean(file, COUNTRY)
+#' }
 #'
 #' @export
 eq_location_clean <- function(data, colName){

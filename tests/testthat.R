@@ -1,5 +1,5 @@
 library(testthat)
-library(earthquakes)
+library(NOAAearthquake)
 
 
-test_check("earthquakes")
+test_check("NOAAearthquake")

@@ -1,5 +1,5 @@
-# earthquakes
-The 'earthquakes' package is a package to clean, visualise and map NOAA earthquakes data, using the following libraries:
+# NOAAearthquake
+The 'NOAAearthquake' package is a package to clean, visualise and map NOAA earthquakes data, using the following libraries:
  - library(readr)
  - library(magrittr)
  - library(dplyr)
