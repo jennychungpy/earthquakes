@@ -6,7 +6,11 @@
 \title{Labelling the timeline(s) of the earthquakes}
 \format{An object of class \code{Geom_Timeline_Label} (inherits from \code{Geom}, \code{ggproto}, \code{gg}) of length 5.}
 \usage{
-Geom_Timeline_Label
+ggplot() +
+  geom_timeline(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
+  theme(legend.position = "bottom") +
+  geom_timeline_label(data, aes(x=DATE, label = locations, n_maxVar = EQ_PRIMARY, n_max=10)) +
+  labs(x = "Date", y = "Country", fill = "# deaths", size = "Richter scale value")
 }
 \arguments{
 \item{x}{- The time parameter (as.Date object)}

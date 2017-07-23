@@ -6,7 +6,9 @@
 \title{Visualising a timeline of the earthquakes}
 \format{An object of class \code{Geom_Timeline} (inherits from \code{Geom}, \code{ggproto}, \code{gg}) of length 5.}
 \usage{
-Geom_Timeline
+ggplot() +
+  geom_timeline(data, aes(x = DATE, y = COUNTRY, size = richterScaleValue, fill = DEATHS)) +
+  theme(legend.position = "bottom")
 }
 \arguments{
 \item{data}{- File name}
