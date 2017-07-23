@@ -1,3 +1,5 @@
+https://travis-ci.org/jennychungpy/earthquakes.svg?branch=master
+
 # NOAAearthquake
 The 'NOAAearthquake' package is a package to clean, visualise and map NOAA earthquakes data, using the following libraries:
  - library(readr)
